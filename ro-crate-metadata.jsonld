@@ -1,0 +1,22 @@
+{
+  "@context": "https://w3id.org/ro/crate/1.1/context",
+  "@graph": [
+    {
+      "@type": "CreativeWork",
+      "@id": "./",
+      "name": "Model 408-OP",
+      "description": "Computational framework for spatial token-topology analysis in MS 408",
+      "license": "https://creativecommons.org/licenses/by/4.0/"
+    },
+    {
+      "@type": "Dataset",
+      "@id": "data/data_88r.csv",
+      "name": "Folio 88r dataset"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "@id": "https://github.com/Superb0b0/model-408-op",
+      "name": "Model 408-OP Repository"
+    }
+  ]
+}
