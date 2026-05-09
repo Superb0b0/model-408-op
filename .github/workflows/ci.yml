@@ -1,0 +1,19 @@
+name: Model 408-OP CI
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - name: Install dependencies
+        run: |
+          pip install pandas numpy networkx matplotlib
+      - name: Run Pipeline
+        run: |
+          # Diciamo a Python di guardare nella cartella corrente
+          export PYTHONPATH="${PYTHONPATH}:$(pwd)"
+          python src/pipeline.py
