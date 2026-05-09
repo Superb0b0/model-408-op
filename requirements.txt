@@ -3,3 +3,5 @@ pandas
 networkx
 scipy
 matplotlib
+jupyter
+powerlaw
