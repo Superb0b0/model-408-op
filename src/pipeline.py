@@ -1,36 +1,25 @@
-import random
-import numpy as np
+import pandas as pd
+from src.pmi import calculate_pmi
 import json
 from datetime import datetime
-import os
 
-# Determiniamo un "Seme" fisso per rendere i risultati riproducibili
-SEED = 42
-random.seed(SEED)
-np.random.seed(SEED)
+def run():
+    df = pd.read_csv("data/raw/folio88r.csv")
+    pmi_df = calculate_pmi(df)
 
-def run_full_analysis():
-    print("--- Avvio Pipeline Model 408-OP ---")
-    
+    # Salviamo i risultati migliori nella traccia
+    top_5 = pmi_df.head(5).to_dict(orient='records')
+
     trace = {
-        "timestamp": datetime.utcnow().isoformat() + "Z",
-        "seed": SEED,
-        "dataset": "data/raw/folio88r.csv",
-        "metrics": {
-            "entropy": 4.191,
-            "vocabulary_ratio": 0.064
-        }
+        "timestamp": datetime.utcnow().isoformat(),
+        "top_pmi_attractions": top_5
     }
-    
-    # Assicuriamoci che la cartella results esista
-    if not os.path.exists('results'):
-        os.makedirs('results')
-        
-    # Salviamo il report in JSON (formato leggibile dalle macchine)
-    with open('results/execution_trace.json', 'w') as f:
+
+    with open("results/execution_trace.json", "w") as f:
         json.dump(trace, f, indent=2)
-    
-    print("Pipeline completata. Risultati salvati in results/execution_trace.json")
+
+    pmi_df.to_csv("results/pmi_matrix.csv", index=False)
+    print("Pipeline aggiornata con successo!")
 
 if __name__ == "__main__":
-    run_full_analysis()
+    run()
