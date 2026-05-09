@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Deidda"
+  given-names: "Roberto"
+title: "Model 408-OP: Computational Framework for MS 408 Structural Analysis"
+version: 1.0.0
+doi: 10.5281/zenodo.20098967
+date-released: 2026-05-09
+url: "https://github.com/Superb0b0/model-408-op"
