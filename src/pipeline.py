@@ -1,25 +1,27 @@
-import pandas as pd
-from src.pmi import calculate_pmi
-import json
-from datetime import datetime
+import os
 
-def run():
-    df = pd.read_csv("data/raw/folio88r.csv")
-    pmi_df = calculate_pmi(df)
+def load_data(filepath):
+    """Carica il file di testo gestendo i percorsi relativi."""
+    if not os.path.exists(filepath):
+        # Prova a risalire se chiamato da un notebook
+        alt_path = os.path.join("..", filepath)
+        if os.path.exists(alt_path):
+            filepath = alt_path
+    
+    with open(filepath, "r", encoding="utf-8") as f:
+        return f.read()
 
-    # Salviamo i risultati migliori nella traccia
-    top_5 = pmi_df.head(5).to_dict(orient='records')
-
-    trace = {
-        "timestamp": datetime.utcnow().isoformat(),
-        "top_pmi_attractions": top_5
-    }
-
-    with open("results/execution_trace.json", "w") as f:
-        json.dump(trace, f, indent=2)
-
-    pmi_df.to_csv("results/pmi_matrix.csv", index=False)
-    print("Pipeline aggiornata con successo!")
+def get_clean_tokens(text):
+    """Pulisce il testo e restituisce token e righe."""
+    lines = [l.strip() for l in text.split("\n") if l.strip() and not l.startswith("#")]
+    tokens = (" ".join(lines)).split()
+    return tokens, lines
 
 if __name__ == "__main__":
-    run()
+    # Test rapido se eseguito come script
+    try:
+        text = load_data("data/voynich_source.txt")
+        tokens, lines = get_clean_tokens(text)
+        print(f"Successo: {len(tokens)} token trovati.")
+    except Exception as e:
+        print(f"Errore: {e}")
