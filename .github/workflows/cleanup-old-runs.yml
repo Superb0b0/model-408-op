@@ -4,6 +4,10 @@ on:
     inputs:
       dry_run:
         description: "true = solo elenco, false = cancella"
+        type: choice
+        options:
+          - "true"
+          - "false"
         default: "true"
 permissions:
   actions: write
