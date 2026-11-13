@@ -1,0 +1,33 @@
+name: cleanup-old-runs
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "true = solo elenco, false = cancella"
+        default: "true"
+permissions:
+  actions: write
+  contents: read
+jobs:
+  cleanup:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Cancella run con email non noreply
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          DRY: ${{ inputs.dry_run }}
+        run: |
+          FILTER='def ok: (. // "") | (endswith("users.noreply.github.com") or . == "noreply@github.com");
+            .workflow_runs[]
+            | select(.status == "completed" and .head_commit != null)
+            | select((.head_commit.author.email | ok | not) or (.head_commit.committer.email | ok | not))
+            | .id'
+          ids=$(gh api --paginate "repos/$REPO/actions/runs?per_page=100" --jq "$FILTER")
+          echo "Run selezionate: $(printf '%s\n' "$ids" | sed '/^$/d' | wc -l)"
+          printf '%s\n' "$ids" | sed '/^$/d' | sort -n
+          if [ "$DRY" = "false" ]; then
+            for id in $ids; do gh api -X DELETE "repos/$REPO/actions/runs/$id" && echo "cancellata $id"; done
+          else
+            echo "Dry run: nessuna cancellazione."
+          fi
