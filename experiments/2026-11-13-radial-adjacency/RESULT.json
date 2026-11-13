@@ -1,0 +1,20 @@
+{
+  "classification": "EXPLORATORY",
+  "verdict": "NULLO",
+  "input_sha256": "bf5b6d4ac1e3a51b1847a9c388318d609020441ccd56984c901c32b09beccafc",
+  "protocol_sha256": "41b8a3fc2d8a4d49dcb88b9462851d3f0d921977e48e5f8db49e22522f0be815",
+  "script_sha256": "51673a6e2dfa5fda2f845300073089a88bf71e1a226c2d8422f666aed50f04e0",
+  "folios": 8,
+  "radial_loci": 142,
+  "pairs": 134,
+  "observed_equal_pairs": 46,
+  "baseline_mean": 44.5296,
+  "baseline_95_interval": [
+    37,
+    53
+  ],
+  "null_ge": 8019,
+  "p_upper": 0.4009799510024499,
+  "seed": 20261113,
+  "permutations": 20000
+}
