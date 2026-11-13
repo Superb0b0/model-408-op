@@ -18,10 +18,10 @@ jobs:
           REPO: ${{ github.repository }}
           DRY: ${{ inputs.dry_run }}
         run: |
-          FILTER='def ok: (. // "") | (endswith("users.noreply.github.com") or . == "noreply@github.com");
+          FILTER='
             .workflow_runs[]
             | select(.status == "completed" and .head_commit != null)
-            | select((.head_commit.author.email | ok | not) or (.head_commit.committer.email | ok | not))
+            | select(.id as $id | ([25611262899,25611355593,25611622363,25612056858,25612138446,25612181148,25612181154,25612210432,25612210439,25612461772,25612461775,25612823749,25612823750,25613038540,25613038547,25616427144,25616443909,25616489841,27384816590,27384894751] | index($id)) != null)
             | .id'
           ids=$(gh api --paginate "repos/$REPO/actions/runs?per_page=100" --jq "$FILTER")
           echo "Run selezionate: $(printf '%s\n' "$ids" | sed '/^$/d' | wc -l)"
